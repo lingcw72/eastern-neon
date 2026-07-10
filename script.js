@@ -1,15 +1,6 @@
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.12 }
-);
-
-document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+const menuButton=document.querySelector('.menu-toggle');const nav=document.querySelector('.nav');
+if(menuButton&&nav)menuButton.addEventListener('click',()=>{nav.classList.toggle('open');document.body.classList.toggle('menu-open');menuButton.setAttribute('aria-expanded',nav.classList.contains('open'))});
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+document.querySelectorAll('.filter').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));button.classList.add('active');const value=button.dataset.filter;document.querySelectorAll('.project-card').forEach(card=>card.hidden=value!=='all'&&!card.dataset.category.includes(value))}));
+const choices=document.querySelectorAll('.choice');const serviceInput=document.querySelector('#service');const formPanel=document.querySelector('.form-panel');choices.forEach(choice=>choice.addEventListener('click',()=>{choices.forEach(c=>c.classList.remove('selected'));choice.classList.add('selected');if(serviceInput)serviceInput.value=choice.dataset.value;if(formPanel)formPanel.hidden=false;formPanel?.scrollIntoView({behavior:'smooth',block:'start'})}));
+const enquiry=document.querySelector('#enquiry-form');if(enquiry)enquiry.addEventListener('submit',event=>{event.preventDefault();const data=new FormData(enquiry);const subject=encodeURIComponent(`Website enquiry: ${data.get('service')||'Building signage project'}`);const body=encodeURIComponent(`Name: ${data.get('name')}\nCompany: ${data.get('company')}\nPhone: ${data.get('phone')}\nEmail: ${data.get('email')}\nBuilding: ${data.get('building')}\nService: ${data.get('service')}\nTiming: ${data.get('timing')}\n\nProject details:\n${data.get('details')}`);window.location.href=`mailto:admin@easternneon.com?subject=${subject}&body=${body}`});
